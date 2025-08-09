@@ -73,7 +73,7 @@ class Tarea {
         System.out.println("----------------------------------");
     }
 
-    class GestorTareas {
+    static class GestorTareas {
         private ArrayList<Tarea> listaTareas;
 
         public GestorTareas() {
@@ -95,6 +95,7 @@ class Tarea {
                 listaTareas.get(i).mostrarInfo(i);
             }
         }
+
         public void listarTareasPorEstado(boolean completadas) {
             boolean alguna = false;
             String estadoStr = completadas ? "Completadas" : "Pendientes";
@@ -108,6 +109,61 @@ class Tarea {
             if (!alguna) {
                 System.out.println("No hay tareas " + estadoStr.toLowerCase() + ".\n");
             }
+        }
+
+        public void marcarTareaComoCompletada(int indice) {
+            if (indice < 0 || indice >= listaTareas.size()) {
+                System.out.println("Índice inválido.\n");
+                return;
+            }
+            listaTareas.get(indice).marcarComoCompletada();
+            System.out.println("Tarea marcada como completada.\n");
+        }
+
+        public void editarTarea(int indice, String descripcion, String fechaLimite, String prioridad, String categoria) {
+            if (indice < 0 || indice >= listaTareas.size()) {
+                System.out.println("Índice inválido.\n");
+                return;
+            }
+            listaTareas.get(indice).editarTarea(descripcion, fechaLimite, prioridad, categoria);
+            System.out.println("Tarea editada correctamente.\n");
+        }
+
+        public void eliminarTarea(int indice) {
+            if (indice < 0 || indice >= listaTareas.size()) {
+                System.out.println("Índice inválido.\n");
+                return;
+            }
+            listaTareas.remove(indice);
+            System.out.println("Tarea eliminada.\n");
+        }
+
+        public int cantidadTareas() {
+            return listaTareas.size();
+        }
+    }
+
+    public class ProgramaTareas {
+        private static Scanner sc = new Scanner(System.in);
+        private static GestorTareas gestor = new GestorTareas();
+
+        public static void main(String[] args) {
+            int opcion;
+            do {
+                mostrarMenu();
+                opcion = leerEntero("Seleccione una opción: ");
+
+                switch (opcion) {
+                    case 1 -> agregarTarea();
+                    case 2 -> gestor.listarTareas();
+                    case 3 -> marcarComoCompletada();
+                    case 4 -> editarTarea();
+                    case 5 -> listarPorEstado();
+                    case 6 -> eliminarTarea();
+                    case 7 -> System.out.println("Saliendo del programa. ¡Hasta luego!");
+                    default -> System.out.println("Opción inválida, intente de nuevo.");
+                }
+            } while (opcion != 7);
         }
     }
 }
